@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Performance Dashboard</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      margin: 20px; 
+      background-color: #121212; 
+      color: #fff;
+    }
+    #charts-container { 
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: 20px; 
+    }
+    .chart { 
+      width: 45%; 
+      min-width: 400px; 
+      height: 400px; 
+    }
+    button, input[type="text"] {
+      margin: 10px; 
+      padding: 10px; 
+      font-size: 16px;
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+    }
+    input[type="text"]::placeholder {
+      color: #aaa;
+    }
+    button:hover {
+      background-color: #444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Performance Dashboard</h1>
+
+  <!-- Single Option: Paste Raw GitHub URL -->
+  <div>
+    <label for="fileURL">Enter Raw GitHub URL to JSON file:</label><br>
+    <input type="text" id="fileURL" 
+           placeholder="https://raw.githubusercontent.com/YourUsername/report/main/yourfile.json" 
+           size="80">
+    <br>
+    <button id="loadFileButton">Load JSON Data</button>
+  </div>
+
+  <!-- Dashboard Charts -->
+  <div id="charts-container">
+    <div id="responseTimeChart" class="chart"></div>
+    <div id="throughputChart" class="chart"></div>
+    <div id="mapViewTrendChart" class="chart"></div>
+    <div id="apiComparisonChart" class="chart"></div>
+    <div id="responseHeatmap" class="chart"></div>
+  </div>
+
+  <script>
+    document.getElementById('loadFileButton').addEventListener('click', function() {
+      const url = document.getElementById('fileURL').value.trim();
+      if (!url) {
+        alert("Please enter a valid URL for the JSON file.");
+        return;
+      }
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("File not found or invalid response");
+          }
+          return response.json();
+        })
+        .then(data => generateDashboard(data))
+        .catch(error => {
+          console.error("Error fetching JSON:", error);
+          alert("File not found or invalid JSON. Please check the URL and try again.");
+        });
+    });
+
+    function generateDashboard(data) {
+      let transactions = [];
+      let users20 = [], users40 = [], users70 = [];
+
+      data.forEach((item, index) => {
+        if (index > 0) {
+          transactions.push(item["Average Response Time (Sec) per Transaction"]);
+          users20.push(item[""] || 0);    // 20 Users
+          users40.push(item["__1"] || 0);  // 40 Users
+          users70.push(item["__2"] || 0);  // 70 Users
+        }
+      });
+
+      // Common dark theme layout
+      const darkLayout = {
+        plot_bgcolor: "#121212",
+        paper_bgcolor: "#121212",
+        font: { color: "#fff" }
+      };
+
+      // 1. Response Time Trends (Grouped Bar Chart)
+      Plotly.newPlot('responseTimeChart', [
+        { x: transactions, y: users20, type: 'bar', name: '20 Users' },
+        { x: transactions, y: users40, type: 'bar', name: '40 Users' },
+        { x: transactions, y: users70, type: 'bar', name: '70 Users' }
+      ], Object.assign({
+        title: { text: 'Response Time Trends', x: 0.5, font: { color: '#fff', size: 20 } },
+        barmode: 'group'
+      }, darkLayout));
+
+      // 2. Throughput Trend (Line Chart)
+      Plotly.newPlot('throughputChart', [
+        { x: transactions, y: users20.map(v => v ? 1/v : 0), type: 'scatter', mode: 'lines+markers', name: '20 Users' },
+        { x: transactions, y: users40.map(v => v ? 1/v : 0), type: 'scatter', mode: 'lines+markers', name: '40 Users' },
+        { x: transactions, y: users70.map(v => v ? 1/v : 0), type: 'scatter', mode: 'lines+markers', name: '70 Users' }
+      ], Object.assign({
+        title: { text: 'Throughput (Requests per Second)', x: 0.5, font: { color: '#fff', size: 20 } },
+        yaxis: { title: 'Throughput (1/Response Time)', titlefont: { color: '#fff' } }
+      }, darkLayout));
+
+      // 3. Map View Response Trends (Line Chart for "T04_S04_MapView")
+      let mapViewIndex = transactions.indexOf("T04_S04_MapView");
+      if (mapViewIndex !== -1) {
+        Plotly.newPlot('mapViewTrendChart', [{
+          x: ['20 Users', '40 Users', '70 Users'],
+          y: [users20[mapViewIndex], users40[mapViewIndex], users70[mapViewIndex]],
+          type: 'scatter', mode: 'lines+markers', name: 'MapView'
+        }], Object.assign({
+          title: { text: 'Map View Response Time Trends', x: 0.5, font: { color: '#fff', size: 20 } }
+        }, darkLayout));
+      } else {
+        document.getElementById('mapViewTrendChart').innerHTML = 
+          '<h3 style="color:#fff;">No MapView data found.</h3>';
+      }
+
+      // 4. API Response Comparison (Stacked Bar Chart)
+      Plotly.newPlot('apiComparisonChart', [
+        { x: transactions, y: users20, type: 'bar', name: '20 Users' },
+        { x: transactions, y: users40, type: 'bar', name: '40 Users' },
+        { x: transactions, y: users70, type: 'bar', name: '70 Users' }
+      ], Object.assign({
+        title: { text: 'API Response Time Comparison', x: 0.5, font: { color: '#fff', size: 20 } },
+        barmode: 'stack'
+      }, darkLayout));
+
+      // 5. Response Time Heatmap
+      Plotly.newPlot('responseHeatmap', [{
+        z: [users20, users40, users70],
+        x: transactions,
+        y: ['20 Users', '40 Users', '70 Users'],
+        type: 'heatmap',
+        colorscale: 'Viridis'
+      }], Object.assign({
+        title: { text: 'Response Time Heatmap', x: 0.5, font: { color: '#fff', size: 20 } }
+      }, darkLayout));
+    }
+  </script>
+</body>
+</html>
