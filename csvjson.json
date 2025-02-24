@@ -1,0 +1,74 @@
+[
+  {
+    "Average Response Time (Sec) per Transaction": "Transaction",
+    "": "20 Users",
+    "__1": "40 Users",
+    "__2": "70 Users"
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T01_S01_Launch",
+    "": 0.478,
+    "__1": 0.478,
+    "__2": 0.472
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T02_S02_SSO",
+    "": 0.228,
+    "__1": 0.219,
+    "__2": 0.21
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T03_S03_Login",
+    "": 6.691,
+    "__1": 8.76,
+    "__2": 9.209
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T04_S04_MapView",
+    "": 5.115,
+    "__1": 8.099,
+    "__2": 13.466
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T05_S05_BuildingConfidential",
+    "": 0.765,
+    "__1": 1.617,
+    "__2": 3.591
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T06_S06_BuildingRemove",
+    "": 1.147,
+    "__1": 3.11,
+    "__2": 4.04
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T07_S07_BuildingExport",
+    "": 2.081,
+    "__1": 3.355,
+    "__2": 7.433
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T08_S08_Land",
+    "": 0.755,
+    "__1": 1.88,
+    "__2": 3.487
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T09_S09_Land Export",
+    "": 1.406,
+    "__1": 3.911,
+    "__2": 5.883
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T10_S10_LandConfidential",
+    "": 0.603,
+    "__1": 1.136,
+    "__2": 1.905
+  },
+  {
+    "Average Response Time (Sec) per Transaction": "T11_S11_LandRemove",
+    "": 0.632,
+    "__1": 0.899,
+    "__2": 1.912
+  }
+]
