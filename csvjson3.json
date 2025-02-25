@@ -1,1 +1,51 @@
-[{"Avg Response Time (Sec)":"DataView","":"","_1":"","_2":"","_3":"MapView","_4":"","_5":""},{"Avg Response Time (Sec)":"Transaction","":"20 users","_1":"40 users","_2":"70 users","_3":"20 users","_4":"40 users","_5":"70 users"},{"Avg Response Time (Sec)":"Get\\ Access\\ Token","":"1.483113333","_1":"1.4811788","_2":"1.510873625","_3":"1.473926333","_4":"1.442376","_5":"1.61492125"},{"Avg Response Time (Sec)":"Get_BUILDING_Data","":"4.396207","_1":"4.0216748","_2":"4.823685143","_3":"2.374055667","_4":"2.228254","_5":"2.288639571"},{"Avg Response Time (Sec)":"Post_Building_Comment","":"0.744375","_1":"0.619922","_2":"0.62311425","_3":"0.531375","_4":"0.58116425","_5":"0.573452143"},{"Avg Response Time (Sec)":"Get_Building_Comment","":"0.5975335","_1":"0.5634728","_2":"0.604429375","_3":"0.564275","_4":"0.5626785","_5":"0.555906286"},{"Avg Response Time (Sec)":"Get_Land_Data","":"0.702411","_1":"0.69893","_2":"0.622353375","_3":"0.542639","_4":"0.55953175","_5":"0.551608"},{"Avg Response Time (Sec)":"Post_Land_Comment","":"0.5627625","_1":"0.5768132","_2":"0.603878","_3":"0.565766667","_4":"0.5886072","_5":"0.569465375"},{"Avg Response Time (Sec)":"Get_Land_Comment","":"0.5147085","_1":"0.606611","_2":"0.599835143","_3":"0.507798","_4":"0.5888634","_5":"0.563260625"},{"Avg Response Time (Sec)":"","":"","_1":"","_2":"","_3":"","_4":"","_5":""},{"Avg Response Time (Sec)":"","":"","_1":"","_2":"","_3":"","_4":"","_5":""},{"Avg Response Time (Sec)":"","":"","_1":"","_2":"","_3":"","_4":"","_5":""},{"Avg Response Time (Sec)":"","":"","_1":"","_2":"","_3":"","_4":"","_5":""}]
+[
+{
+  "Source Type": "DataView",
+  "Sampler/Request": "Post Building Comment",
+  "20 Users (Seconds)": 0.74,
+  "40 Users (Seconds)": 0.62,
+  "70 Users (Seconds)": 0.62
+},
+{
+  "Source Type": "DataView",
+  "Sampler/Request": "Get Building Comment",
+  "20 Users (Seconds)": 0.6,
+  "40 Users (Seconds)": 0.56,
+  "70 Users (Seconds)": 0.6
+},
+{
+  "Source Type": "DataView",
+  "Sampler/Request": "Post Land Comment",
+  "20 Users (Seconds)": 0.56,
+  "40 Users (Seconds)": 0.58,
+  "70 Users (Seconds)": 0.6
+},
+{
+  "Source Type": "MapView",
+  "Sampler/Request": "Post Building Comment",
+  "20 Users (Seconds)": 0.53,
+  "40 Users (Seconds)": 0.58,
+  "70 Users (Seconds)": 0.57
+},
+{
+  "Source Type": "MapView",
+  "Sampler/Request": "Get Building Comment",
+  "20 Users (Seconds)": 0.56,
+  "40 Users (Seconds)": 0.56,
+  "70 Users (Seconds)": 0.56
+},
+{
+  "Source Type": "MapView",
+  "Sampler/Request": "Post Land Comment",
+  "20 Users (Seconds)": 0.57,
+  "40 Users (Seconds)": 0.59,
+  "70 Users (Seconds)": 0.57
+},
+{
+  "Source Type": "MapView",
+  "Sampler/Request": "Get Land Comment",
+  "20 Users (Seconds)": 0.51,
+  "40 Users (Seconds)": 0.59,
+  "70 Users (Seconds)": 0.56
+}
+]
