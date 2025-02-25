@@ -1,0 +1,56 @@
+{"data":[{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Check_Building_Export_Balance",
+  "20 Users (Seconds)" : 0.703755333333333,
+  "40 Users (Seconds)" : 0.648236,
+  "70 Users (Seconds)" : 0.582405111111111
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Export_Building_Data",
+  "20 Users (Seconds)" : 0.652636,
+  "40 Users (Seconds)" : 0.54264725,
+  "70 Users (Seconds)" : 0.601843333333333
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Check_Land_Export_Balance",
+  "20 Users (Seconds)" : 0.527275,
+  "40 Users (Seconds)" : 0.5055552,
+  "70 Users (Seconds)" : 0.600824
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Export_Land_Data",
+  "20 Users (Seconds)" : 0.6556395,
+  "40 Users (Seconds)" : 0.526973,
+  "70 Users (Seconds)" : 0.560939125
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Check_Building_Export_Balance",
+  "20 Users (Seconds)" : 0.56605,
+  "40 Users (Seconds)" : 0.53906975,
+  "70 Users (Seconds)" : 1.28522041666667
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Export_Building_Data",
+  "20 Users (Seconds)" : 0.529334,
+  "40 Users (Seconds)" : 0.565647,
+  "70 Users (Seconds)" : 1.63662541666667
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Check_Land_Export_Balance",
+  "20 Users (Seconds)" : 0.75249875,
+  "40 Users (Seconds)" : 0.5421514,
+  "70 Users (Seconds)" : 2.27595244
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Export_Land_Data",
+  "20 Users (Seconds)" : 0.5543855,
+  "40 Users (Seconds)" : 0.5387798,
+  "70 Users (Seconds)" : 1.16031333333333
+}]}
