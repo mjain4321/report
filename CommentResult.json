@@ -1,0 +1,56 @@
+{"data":[{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Post Building Comment",
+  "20 Users (Seconds)" : 0.74,
+  "40 Users (Seconds)" : 0.62,
+  "70 Users (Seconds)" : 0.62
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Get Building Comment",
+  "20 Users (Seconds)" : 0.6,
+  "40 Users (Seconds)" : 0.56,
+  "70 Users (Seconds)" : 0.6
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Post Land Comment",
+  "20 Users (Seconds)" : 0.56,
+  "40 Users (Seconds)" : 0.58,
+  "70 Users (Seconds)" : 0.6
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Get Land Comment",
+  "20 Users (Seconds)" : 0.51,
+  "40 Users (Seconds)" : 0.61,
+  "70 Users (Seconds)" : 0.6
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Post Building Comment",
+  "20 Users (Seconds)" : 0.53,
+  "40 Users (Seconds)" : 0.58,
+  "70 Users (Seconds)" : 0.57
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Get Building Comment",
+  "20 Users (Seconds)" : 0.56,
+  "40 Users (Seconds)" : 0.56,
+  "70 Users (Seconds)" : 0.56
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Post Land Comment",
+  "20 Users (Seconds)" : 0.57,
+  "40 Users (Seconds)" : 0.59,
+  "70 Users (Seconds)" : 0.57
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Get Land Comment",
+  "20 Users (Seconds)" : 0.51,
+  "40 Users (Seconds)" : 0.59,
+  "70 Users (Seconds)" : 0.56
+}]}
