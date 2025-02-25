@@ -1,0 +1,28 @@
+{"data":[{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Get_Building_Filter_Options",
+  "20 Users (Seconds)" : 1.39635,
+  "40 Users (Seconds)" : 1.06146783333333,
+  "70 Users (Seconds)" : 0.924920625
+},
+{
+  "Source Type" : "DataView",
+  "Sampler/Request" : "Get_Land_Filter_Options",
+  "20 Users (Seconds)" : 0.5466665,
+  "40 Users (Seconds)" : 0.838245,
+  "70 Users (Seconds)" : 0.592716
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Get_Building_Filter_Options",
+  "20 Users (Seconds)" : 0.7261865,
+  "40 Users (Seconds)" : 0.7764135,
+  "70 Users (Seconds)" : 0.763119285714286
+},
+{
+  "Source Type" : "MapView",
+  "Sampler/Request" : "Get_Land_Filter_Options",
+  "20 Users (Seconds)" : 0.5336055,
+  "40 Users (Seconds)" : 0.5561134,
+  "70 Users (Seconds)" : 0.55317425
+}]}
