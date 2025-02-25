@@ -1,0 +1,100 @@
+[
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Get Access Token",
+		"20 Users (Seconds)": 1.48,
+		"40 Users (Seconds)": 1.48,
+		"70 Users (Seconds)": 1.51
+	},
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Get Building Data",
+		"20 Users (Seconds)": 4.4,
+		"40 Users (Seconds)": 4.02,
+		"70 Users (Seconds)": 4.82
+	},
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Post Building Comment",
+		"20 Users (Seconds)": 0.74,
+		"40 Users (Seconds)": 0.62,
+		"70 Users (Seconds)": 0.62
+	},
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Get Building Comment",
+		"20 Users (Seconds)": 0.6,
+		"40 Users (Seconds)": 0.56,
+		"70 Users (Seconds)": 0.6
+	},
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Get Land Data",
+		"20 Users (Seconds)": 0.7,
+		"40 Users (Seconds)": 0.7,
+		"70 Users (Seconds)": 0.62
+	},
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Post Land Comment",
+		"20 Users (Seconds)": 0.56,
+		"40 Users (Seconds)": 0.58,
+		"70 Users (Seconds)": 0.6
+	},
+	{
+		"Source Type": "DataView",
+		"Sampler/Request": "Get Land Comment",
+		"20 Users (Seconds)": 0.51,
+		"40 Users (Seconds)": 0.61,
+		"70 Users (Seconds)": 0.6
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Get Access Token",
+		"20 Users (Seconds)": 1.47,
+		"40 Users (Seconds)": 1.44,
+		"70 Users (Seconds)": 1.61
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Get Building Data",
+		"20 Users (Seconds)": 2.37,
+		"40 Users (Seconds)": 2.23,
+		"70 Users (Seconds)": 2.29
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Post Building Comment",
+		"20 Users (Seconds)": 0.53,
+		"40 Users (Seconds)": 0.58,
+		"70 Users (Seconds)": 0.57
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Get Building Comment",
+		"20 Users (Seconds)": 0.56,
+		"40 Users (Seconds)": 0.56,
+		"70 Users (Seconds)": 0.56
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Get Land Data",
+		"20 Users (Seconds)": 0.54,
+		"40 Users (Seconds)": 0.56,
+		"70 Users (Seconds)": 0.55
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Post Land Comment",
+		"20 Users (Seconds)": 0.57,
+		"40 Users (Seconds)": 0.59,
+		"70 Users (Seconds)": 0.57
+	},
+	{
+		"Source Type": "MapView",
+		"Sampler/Request": "Get Land Comment",
+		"20 Users (Seconds)": 0.51,
+		"40 Users (Seconds)": 0.59,
+		"70 Users (Seconds)": 0.56
+	}
+]
