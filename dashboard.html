@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Performance Dashboard</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      margin: 20px; 
+      background-color: #121212; 
+      color: #fff;
+    }
+    #charts-container { 
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: 20px; 
+    }
+    .chart { 
+      width: 45%; 
+      min-width: 400px; 
+      height: 400px; 
+    }
+    button {
+      margin: 10px; 
+      padding: 10px; 
+      font-size: 16px;
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+    }
+    button:hover { background-color: #444; }
+    #example, #conclusion {
+      margin-top: 40px;
+      padding: 20px;
+      border-top: 1px solid #555;
+      font-size: 14px;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #conclusion { font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Performance Dashboard</h1>
+
+  <!-- Load JSON Data Button -->
+  <div>
+    <button id="loadFileButton">Load JSON Data</button>
+  </div>
+
+  <!-- Dashboard Charts -->
+  <div id="charts-container">
+    <!-- DataView Response Time Line Chart -->
+    <div id="dataViewResponseLineChart" class="chart"></div>
+    <!-- MapView Response Time Line Chart -->
+    <div id="mapViewResponseLineChart" class="chart"></div>
+    <!-- Response Time Comparison Summary (Bar Chart) -->
+    <div id="responseTimeComparisonChart" class="chart"></div>
+    <!-- DataView Throughput Line Chart -->
+    <div id="dataViewThroughputLineChart" class="chart"></div>
+    <!-- MapView Throughput Line Chart -->
+    <div id="mapViewThroughputLineChart" class="chart"></div>
+    <!-- Throughput Comparison Summary (Bar Chart) -->
+    <div id="throughputComparisonChart" class="chart"></div>
+  </div>
+
+  <!-- Example Section -->
+  <div id="example">
+    <h2>Example Usage</h2>
+    <p>
+      The dashboard uses the hardcoded base path: 
+      <code>https://mjain4321.github.io/report/</code>.
+      The file name must be provided via a query parameter, e.g.,
+      <code>?file=csvjson3.json</code>.
+      <br><br>
+      For example, to load the file <code>csvjson3.json</code>, use:
+      <br>
+      <code>https://yourdomain.com/dashboard9.html?file=csvjson3.json</code>
+      <br><br>
+      Note: If your file is stored locally (e.g., <code>C:\Users\Mukul Jain\Downloads\csvjson3.json</code>),
+      you must first upload it to a publicly accessible server (such as GitHub Pages) and then use the resulting URL.
+    </p>
+  </div>
+
+  <!-- Conclusion Section -->
+  <div id="conclusion">
+    <h2>Conclusion</h2>
+    <p id="conclusionText">No data loaded yet.</p>
+  </div>
+
+  <script>
+    // Hardcoded default base path
+    const defaultBasePath = "https://mjain4321.github.io/report/";
+
+    // Helper: Get file name from URL query parameter 'file'
+    function getFileNameFromQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('file') || "yourfile.json"; // default file name if not provided
+    }
+
+    // Load JSON data using the default base path + file name from URL
+    document.getElementById('loadFileButton').addEventListener('click', function() {
+      const fileName = getFileNameFromQuery();
+      const fileURL = defaultBasePath + fileName;
+      fetch(fileURL)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("File not found or invalid response");
+          }
+          return response.json();
+        })
+        .then(data => generateDashboard(data))
+        .catch(error => {
+          console.error("Error fetching JSON:", error);
+          alert("File not found or invalid JSON. Please check the URL and try again.");
+        });
+    });
+
+    function generateDashboard(data) {
+      // Use data.data if available; otherwise, use data directly.
+      let actualData = data.data || data;
+      if (!Array.isArray(actualData) || actualData.length === 0) {
+        alert("JSON data is empty or in an invalid format.");
+        return;
+      }
+
+      // If the JSON uses the old CSVJSON format (without "Source Type")
+      if (actualData[0]["Average Response Time (Sec) per Transaction"]) {
+        let transactions = [];
+        let users20 = [], users40 = [], users70 = [];
+        let startIndex = (actualData[0]["Average Response Time (Sec) per Transaction"].toLowerCase() === "transaction") ? 1 : 0;
+        for (let i = startIndex; i < actualData.length; i++) {
+          transactions.push(actualData[i]["Average Response Time (Sec) per Transaction"]);
+          users20.push(parseFloat(actualData[i][""]) || 0);
+          users40.push(parseFloat(actualData[i]["__1"]) || 0);
+          users70.push(parseFloat(actualData[i]["__2"]) || 0);
+        }
+        generateLineChart("dataViewResponseLineChart", "Generic Response Time", transactions, users20, users40, users70);
+        generateLineChart("throughputChart", "Generic Throughput", transactions, users20.map(v => v ? 1/v : 0), users40.map(v => v ? 1/v : 0), users70.map(v => v ? 1/v : 0));
+        document.getElementById('conclusionText').innerText = "Data loaded using generic CSVJSON format. No Source Type grouping available.";
+        return;
+      }
+      // Otherwise, assume the JSON has "Source Type" and "Sampler/Request" fields.
+      else if (actualData[0]["Source Type"]) {
+        // Separate DataView and MapView items
+        let dataViewItems = actualData.filter(item => item["Source Type"].toLowerCase().includes("dataview"));
+        let mapViewItems = actualData.filter(item => item["Source Type"].toLowerCase().includes("mapview"));
+
+        function extractGroupData(items) {
+          let transactions = [];
+          let u20 = [];
+          let u40 = [];
+          let u70 = [];
+          items.forEach(item => {
+            transactions.push(item["Sampler/Request"] || "Unknown");
+            u20.push(parseFloat(item["20 Users (Seconds)"]) || 0);
+            u40.push(parseFloat(item["40 Users (Seconds)"]) || 0);
+            u70.push(parseFloat(item["70 Users (Seconds)"]) || 0);
+          });
+          return { transactions, u20, u40, u70 };
+        }
+        const dv = extractGroupData(dataViewItems);
+        const mv = extractGroupData(mapViewItems);
+
+        // 1. Response Time Line Charts for each group
+        generateLineChart("dataViewResponseLineChart", "DataView Response Time", dv.transactions, dv.u20, dv.u40, dv.u70);
+        generateLineChart("mapViewResponseLineChart", "MapView Response Time", mv.transactions, mv.u20, mv.u40, mv.u70);
+
+        // 2. Generate Bar Chart for Response Time Comparison (average response time)
+        let dvAvg = {
+          "20": average(dv.u20),
+          "40": average(dv.u40),
+          "70": average(dv.u70)
+        };
+        let mvAvg = {
+          "20": average(mv.u20),
+          "40": average(mv.u40),
+          "70": average(mv.u70)
+        };
+        generateSummaryChart(["20 Users", "40 Users", "70 Users"], [dvAvg["20"], dvAvg["40"], dvAvg["70"]],
+                             [mvAvg["20"], mvAvg["40"], mvAvg["70"]], "Response Time Comparison (sec)", "responseTimeComparisonChart");
+
+        // 3. Throughput Line Charts for each group (throughput = 1/response time)
+        generateLineChart("dataViewThroughputLineChart", "DataView Throughput", dv.transactions, dv.u20.map(v => calcThroughput(v)), dv.u40.map(v => calcThroughput(v)), dv.u70.map(v => calcThroughput(v)));
+        generateLineChart("mapViewThroughputLineChart", "MapView Throughput", mv.transactions, mv.u20.map(v => calcThroughput(v)), mv.u40.map(v => calcThroughput(v)), mv.u70.map(v => calcThroughput(v)));
+
+        // 4. Throughput Comparison Summary (Bar Chart)
+        let dvThroughput = {
+          "20": calcThroughput(dvAvg["20"]),
+          "40": calcThroughput(dvAvg["40"]),
+          "70": calcThroughput(dvAvg["70"])
+        };
+        let mvThroughput = {
+          "20": calcThroughput(mvAvg["20"]),
+          "40": calcThroughput(mvAvg["40"]),
+          "70": calcThroughput(mvAvg["70"])
+        };
+        generateSummaryChart(["20 Users", "40 Users", "70 Users"], [dvThroughput["20"], dvThroughput["40"], dvThroughput["70"]],
+                             [mvThroughput["20"], mvThroughput["40"], mvThroughput["70"]], "Throughput Comparison (req/sec)", "throughputComparisonChart");
+
+        // 5. Conclusion
+        let conclusionText = "Conclusion:\n";
+        conclusionText += `DataView Avg Response: [20 Users: ${dvAvg["20"].toFixed(2)} sec, 40 Users: ${dvAvg["40"].toFixed(2)} sec, 70 Users: ${dvAvg["70"].toFixed(2)} sec]\n`;
+        conclusionText += `MapView Avg Response: [20 Users: ${mvAvg["20"].toFixed(2)} sec, 40 Users: ${mvAvg["40"].toFixed(2)} sec, 70 Users: ${mvAvg["70"].toFixed(2)} sec]\n\n`;
+        conclusionText += `DataView Throughput: [20 Users: ${dvThroughput["20"].toFixed(2)} req/sec, 40 Users: ${dvThroughput["40"].toFixed(2)} req/sec, 70 Users: ${dvThroughput["70"].toFixed(2)} req/sec]\n`;
+        conclusionText += `MapView Throughput: [20 Users: ${mvThroughput["20"].toFixed(2)} req/sec, 40 Users: ${mvThroughput["40"].toFixed(2)} req/sec, 70 Users: ${mvThroughput["70"].toFixed(2)} req/sec]\n\n`;
+        let dvOverall = (dvAvg["20"] + dvAvg["40"] + dvAvg["70"]) / 3;
+        let mvOverall = (mvAvg["20"] + mvAvg["40"] + mvAvg["70"]) / 3;
+        if (dvOverall < mvOverall) {
+          conclusionText += "Overall, DataView exhibits lower response times and higher throughput compared to MapView.";
+        } else if (mvOverall < dvOverall) {
+          conclusionText += "Overall, MapView exhibits lower response times and higher throughput compared to DataView.";
+        } else {
+          conclusionText += "Overall, both DataView and MapView show similar performance.";
+        }
+        document.getElementById('conclusionText').innerText = conclusionText;
+      } else {
+        alert("Unsupported JSON format.");
+      }
+    }
+
+    // Utility function to compute average of an array
+    function average(arr) {
+      return arr.reduce((sum, val) => sum + val, 0) / arr.length;
+    }
+
+    // Utility function to calculate throughput as 1 / response time (if response time > 0)
+    function calcThroughput(responseTime) {
+      return responseTime > 0 ? 1 / responseTime : 0;
+    }
+
+    // Function to generate line charts (for response time or throughput)
+    function generateLineChart(chartDiv, chartTitle, xValues, ySeries20, ySeries40, ySeries70) {
+      const darkLayout = {
+        plot_bgcolor: "#121212",
+        paper_bgcolor: "#121212",
+        font: { color: "#fff" }
+      };
+      Plotly.newPlot(chartDiv, [
+        { x: xValues, y: ySeries20, type: 'scatter', mode: 'lines+markers', name: '20 Users' },
+        { x: xValues, y: ySeries40, type: 'scatter', mode: 'lines+markers', name: '40 Users' },
+        { x: xValues, y: ySeries70, type: 'scatter', mode: 'lines+markers', name: '70 Users' }
+      ], Object.assign({
+        title: { text: chartTitle, x: 0.5, font: { color: '#fff', size: 20 } },
+      }, darkLayout));
+    }
+
+    // Function to generate summary comparison charts (bar charts)
+    function generateSummaryChart(xValues, group1, group2, titleText, chartDiv) {
+      const darkLayout = {
+        plot_bgcolor: "#121212",
+        paper_bgcolor: "#121212",
+        font: { color: "#fff" }
+      };
+      Plotly.newPlot(chartDiv, [
+        { x: xValues, y: group1, type: 'bar', name: 'DataView' },
+        { x: xValues, y: group2, type: 'bar', name: 'MapView' }
+      ], Object.assign({
+        title: { text: titleText, x: 0.5, font: { color: '#fff', size: 20 } },
+        barmode: 'group'
+      }, darkLayout));
+    }
+  </script>
+</body>
+</html>
